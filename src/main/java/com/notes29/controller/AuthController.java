@@ -21,7 +21,6 @@ import com.notes29.model.User;
 import com.notes29.repository.UserRepository;
 import com.notes29.security.JwtUtil;
 
-
 @RestController
 @RequestMapping("/notes29/auth")
 @CrossOrigin("http://localhost:5174")
@@ -64,9 +63,13 @@ public class AuthController {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String token = jwtUtil.generateToken(userDetails);
 
+        User user = userRepository.findByUsername(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         AuthResponse response = new AuthResponse();
         response.setToken(token);
         response.setUsername(userDetails.getUsername());
+        response.setRole(user.getRole().name());
 
         return ResponseEntity.ok(response);
     }

@@ -2,6 +2,7 @@ package com.notes29.dto;
 
 import lombok.Data;
 
+
 @Data
 public class AuthResponse {
 	
